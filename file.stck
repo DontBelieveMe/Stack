@@ -1,0 +1,12 @@
+set value1 17
+set value2 3
+
+push value1
+push value2
+div
+push value2
+mult
+push value1
+swap
+sub
+print
