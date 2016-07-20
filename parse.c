@@ -15,9 +15,9 @@ cmd_t _cmds[CMD_COUNT] = {
 	{&stack_print, "print"},
 	{&stack_swap,  "swap" },
 	{&stack_div,   "div"  },
-	{NULL,  	   "jump" },		/* These two are parsed at runtime, therefore have no */
+	{NULL,         "jump" },		/* These two are parsed at runtime, therefore have no */
 	{NULL,         "ifeq" },
-	{NULL,		   "set" }			/* cmd pointers. They are here for the name lookup. */ 
+	{NULL,         "set"  }			/* cmd pointers. They are here for the name lookup. */ 
 };
 
 macro_t* _macros[MAX_MACROS] = {};
