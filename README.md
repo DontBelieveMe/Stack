@@ -28,6 +28,7 @@ set
 ```
 `push` takes one argument (`x`) and pushed `x` onto the top of the stack.
   - e.g `push 10` will push 10 on top of the stack.
+
 `pop` takes no arguments and removes the top element from the stack.
   - e.g ``` 
          push 10
