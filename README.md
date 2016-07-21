@@ -68,7 +68,7 @@ set
 ## TODO
 - [ ] Labels for `jump` and `ifeq` - using line numbers is a pain
 - [ ] Refactor the parse.c file to be better.
-- [ ] Rename and change `file_t` to be `module_t`
+- [x] Rename and change `file_t` to be `module_t`
 - [ ] Changable variable
 - [ ] Support for other data types
   - [ ] Double
@@ -76,5 +76,5 @@ set
   - [ ] Boolean (?
 - [ ] Functions
 - [x] Continious integration
-- [ ] Sort obj, exe, .c, .c and .stck files into different folders.
-- [ ] Removed .vscode folder.
+- [x] Sort obj, exe, .c, .c and .stck files into different folders.
+- [x] Removed .vscode folder.
