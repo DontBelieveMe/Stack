@@ -9,7 +9,6 @@ A small stack based programming language written in C.
   - stacky.c: This doesn't check the amount of command arguments supplied. A small thing but oh well.
   - Some of the operations are parsed and performed at 'run-time'. This isn't good. (`jump` and `ifeq`)
 - stack.c and stack.h on the other hand I think are quite good. But again, that might just be me.
-- I don't know if this is cross platform compatible. (At the minuite it only works on windows). I should probably setup CI.
 
 ### Limitations
 - There are also some quite serious limitations. 
@@ -76,6 +75,6 @@ set
   - [ ] String ([const?] char *)
   - [ ] Boolean (?
 - [ ] Functions
-- [ ] Continious integration
+- [x] Continious integration
 - [ ] Sort obj, exe, .c, .c and .stck files into different folders.
 - [ ] Removed .vscode folder.
