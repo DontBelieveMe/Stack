@@ -10,11 +10,11 @@ A small stack based programming language written in C.
   - Some of the operations are parsed and performed at 'run-time'. This isn't good. (`jump` and `ifeq`)
 - stack.c and stack.h on the other hand I think are quite good. But again, that might just be me.
 
-###
+### Limitations
 - There are also some quite serious limitations. 
   - Only integers can be pushed and handled by the stack.
-  - Macros are cannot be changed (as they are swapped out at 'compile-time') and this means that they cannot be used as variables to keep track of changing values. For example counters.
-  - 
+  - Macros are cannot be changed (as they are swapped out at 'compile-time') and this means that they cannot be used as variables to  - store changing values. For example counters.
+  
 ## Using Stack
 Currently there are 12 operations
 ```
