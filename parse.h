@@ -27,17 +27,17 @@ typedef struct _line {
 	int           	number;
 } line_t;
 
-typedef struct _file {
+typedef struct _module {
 	int lines;
 	line_t *head;
 	int macros;
-} file_t;
+} module;
 
-file_t *load_file(const char *path);
-void    close_file(file_t *mod);
+module *load_file(const char *path);
+void    close_file(module *mod);
 void	line_execute(stack_st *s, line_t *line);
-line_t *line_execute_ln(stack_st *s, int ln, file_t *mod);
-void    mod_execute(stack_st *s, file_t *mod);
-line_t *line_at_ln(file_t *mod, int ln);
+line_t *line_execute_ln(stack_st *s, int ln, module *mod);
+void    mod_execute(stack_st *s, module *mod);
+line_t *line_at_ln(module *mod, int ln);
 
 #endif

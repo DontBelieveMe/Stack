@@ -5,7 +5,8 @@
 #include <string.h>
 #include <ctype.h>
 
-cmd_t _cmds[CMD_COUNT] = {
+cmd_t 
+_cmds[CMD_COUNT] = {
 	{&stack_push,  "push" },
 	{&stack_popnt, "pop"  },
 	{&stack_add,   "add"  },
@@ -21,10 +22,12 @@ cmd_t _cmds[CMD_COUNT] = {
 	{NULL,		   "settop"},
 };
 
-macro_t* _macros[MAX_MACROS] = {};
+macro_t* 
+_macros[MAX_MACROS] = {0};
 
     
-void _replace_str(char *line, const char *search, const char *replace)
+void 
+_replace_str(char *line, const char *search, const char *replace)
 {
      char *sp;
 
@@ -40,7 +43,8 @@ void _replace_str(char *line, const char *search, const char *replace)
      memcpy(sp, replace, replace_len);
 }
 
-int _eval_line(line_t *line_out, char *line_in, int *nmacros) {
+int 
+_eval_line(line_t *line_out, char *line_in, int *nmacros) {
 	line_out->arg = -1;
 	
 	if(*nmacros > 0) {
@@ -82,7 +86,8 @@ int _eval_line(line_t *line_out, char *line_in, int *nmacros) {
 	return error;
 }
 
-char *_trim_whitespace(char *str) {
+char*
+_trim_whitespace(char *str) {
 	char *end;
 	while(isspace(*str)) str++;
 
@@ -96,11 +101,12 @@ char *_trim_whitespace(char *str) {
 	return str;
 }
 
-file_t *load_file(const char *path) {
+module*
+load_file(const char *path) {
 	FILE *fp;
 	char line[128];
     
-	file_t *_file = malloc(sizeof(file_t));
+	module *_file = malloc(sizeof(module));
 	_file->head = NULL;
 	_file->macros = 0;
 	
@@ -140,7 +146,8 @@ file_t *load_file(const char *path) {
 	return _file;
 }
 
-void close_file(file_t *mod) {
+void 
+close_file(module *mod) {
 	line_t *tmp;
 	while(mod->head != NULL) {
 		tmp = mod->head;
@@ -154,7 +161,8 @@ void close_file(file_t *mod) {
 	mod = NULL;
 }
 
-void line_execute(stack_st *s, line_t *line) {
+void
+line_execute(stack_st *s, line_t *line) {
 	if(strcmp(line->string, "\n") != 0 && line->cmd->fptr != NULL) {
 		if(line->arg == -1) {
 			line->cmd->fptr(s);
@@ -164,7 +172,8 @@ void line_execute(stack_st *s, line_t *line) {
 	}
 }
 
-line_t *line_at_ln(file_t *mod, int ln) {
+line_t*
+line_at_ln(module *mod, int ln) {
 	line_t *it = mod->head;
 	while(it != NULL) {
 		if(it->number == ln) {
@@ -176,16 +185,19 @@ line_t *line_at_ln(file_t *mod, int ln) {
 	return NULL;
 }
 
-line_t *line_execute_ln(stack_st *s, int ln, file_t *mod) {
+line_t* 
+line_execute_ln(stack_st *s, int ln, module *mod) {
 	line_t *it = line_at_ln(mod, ln);
 	line_execute(s, it);
 	return it;
 }
 
-void mod_execute(stack_st *s, file_t *mod) {
+void
+mod_execute(stack_st *s, module *mod) {
 	int i;
 	for(i = 1; i <= mod->lines; ++i) {
 		line_t *ln = line_at_ln(mod, i);
+	//	printf("%s\n", ln->string);
 		const char *name =  ln->cmd->name;
 		// It isn't good that these operations are parsed at 'runtime'...
 		// TODO: change
