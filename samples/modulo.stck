@@ -1,5 +1,5 @@
-set value1 10
-set value2 5
+set value1 50
+set value2 3
 push value1
 push value2
 div

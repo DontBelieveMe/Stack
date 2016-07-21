@@ -104,7 +104,7 @@ file_t *load_file(const char *path) {
 	_file->macros = 0;
 	
 	line_t *current = NULL;
-	fp = fopen("file.stck", "r");
+	fp = fopen(path, "r");
 
 	int lines = 0;
     while(fgets(line, sizeof(line), fp)){
