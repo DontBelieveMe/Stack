@@ -32,14 +32,23 @@ set
 `pop` takes no arguments and removes the top element from the stack.
 
 `add` takes no arguments and will pop off and add together the two top elements on the stack and then push the result to the top of         the stack.
+
 `sub` takes no arguments and will pop off and subtract the two top elements on the stack and then push the result to the top of the stack.
+
 `mult` takes no arguments and will pop off and multiply the two top elements on the stack and push the result to the top of the stack.
+
 `dup`  takes no arguments and duplicated the top element on the stack, pushing the duplicated element on top of the old one.
+
 `print` takes no arguments and will print the top element on the stack.
+
 `swap` takes no arguments and will swap over the first two elements on the stack.
+
 `div` takes no arguments and will divide the top two elements on the stack and push the result onto the top of the stack.
+
 `jump` takes one argument (`x`) and will jump to line number `x`
+
 `ifeq` takes one argument (`x`). If the top element on the stack equals 0 then continue else jump to line `x`
+
 `set`  takes two arguments (`n` and `v`) and will define a macro with a name of `n` and a value of `v`. 
   - e.g `set variable 10` will set a macro called `variable` to the value of `7`
   - `push variable` would then push 7 on top of the stack.
