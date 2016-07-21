@@ -1,5 +1,9 @@
 #include "parse.h"
 
+#ifdef _WIN32
+#define _CRT_SECURE_NO_DEPRECATE
+#endif
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
