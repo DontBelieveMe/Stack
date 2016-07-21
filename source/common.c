@@ -2,6 +2,7 @@
 
 #include <string.h>
 #include <stdlib.h>
+#include <ctype.h>
 
 void 
 str_replace(char *str, const char *delim, const char *replace) {
