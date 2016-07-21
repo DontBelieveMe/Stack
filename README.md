@@ -9,6 +9,7 @@ A small stack based programming language written in C.
   - stacky.c: This doesn't check the amount of command arguments supplied. A small thing but oh well.
   - Some of the operations are parsed and performed at 'run-time'. This isn't good. (`jump` and `ifeq`)
 - stack.c and stack.h on the other hand I think are quite good. But again, that might just be me.
+- I don't know if this is cross platform compatible. I should probably setup CI.
 
 ### Limitations
 - There are also some quite serious limitations. 
@@ -16,6 +17,11 @@ A small stack based programming language written in C.
   - Macros are cannot be changed (as they are swapped out at 'compile-time') and this means that they cannot be used as variables to  - store changing values. For example counters.
   
 ## Using Stack
+Stack source files have the extension .stck
+Compile the source and then use the resultant `stack.exe` program to execute your code.
+(Assuming that `stack.exe` is in your path or in the same folder) 
+`stack <filename>.stck` will compile the stack file and output to standard output.
+
 Currently there are 12 operations
 ```
 push
@@ -57,3 +63,17 @@ set
 `set`  takes two arguments (`n` and `v`) and will define a macro with a name of `n` and a value of `v`. 
   - e.g `set variable 7` will set a macro called `variable` to the value of `7`
   - `push variable` would then push 7 on top of the stack.
+
+## TODO
+- [ ] Labels for `jump` and `ifeq` - using line numbers is a pain
+- [ ] Refactor the parse.c file to be better.
+- [ ] Rename and change `file_t` to be `module_t`
+- [ ] Changable variable
+- [ ] Support for other data types
+  - [ ] Double
+  - [ ] String ([const?] char *)
+  - [ ] Boolean (?
+- [ ] Functions
+- [ ] Continious integration
+- [ ] Sort obj, exe, .c, .c and .stck files into different folders.
+- [ ] Removed .vscode folder.
