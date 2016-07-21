@@ -1,4 +1,4 @@
-# Stack [![Build status](https://travis-ci.org/DontBelieveMe/Stack.svg?branch=master)](https://travis-ci.org/DontBelieveMe/Stack.svg?branch=master)
+# Stack [![Build status](https://travis-ci.org/DontBelieveMe/Stack.svg?branch=master)](https://travis-ci.org/DontBelieveMe/Stack)
 A small stack based programming language written in C.
 
 ## Notes
@@ -9,7 +9,6 @@ A small stack based programming language written in C.
   - stacky.c: This doesn't check the amount of command arguments supplied. A small thing but oh well.
   - Some of the operations are parsed and performed at 'run-time'. This isn't good. (`jump` and `ifeq`)
 - stack.c and stack.h on the other hand I think are quite good. But again, that might just be me.
-- I don't know if this is cross platform compatible. (At the minuite it only works on windows). I should probably setup CI.
 
 ### Limitations
 - There are also some quite serious limitations. 
@@ -17,7 +16,7 @@ A small stack based programming language written in C.
   - Macros are cannot be changed (as they are swapped out at 'compile-time') and this means that they cannot be used as variables to  - store changing values. For example counters.
   
 ## Using Stack
-Stack source files have the extension .stck.
+Stack source files have the extension .stck. (They could actually have any file extension at the minuite probably).
 
 Compile the source and then use the resultant `stack.exe` program to execute your code.
 
@@ -76,6 +75,6 @@ set
   - [ ] String ([const?] char *)
   - [ ] Boolean (?
 - [ ] Functions
-- [ ] Continious integration
+- [x] Continious integration
 - [ ] Sort obj, exe, .c, .c and .stck files into different folders.
 - [ ] Removed .vscode folder.
