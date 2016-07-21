@@ -17,7 +17,7 @@ A small stack based programming language written in C.
   - Macros are cannot be changed (as they are swapped out at 'compile-time') and this means that they cannot be used as variables to  - store changing values. For example counters.
   
 ## Using Stack
-Stack source files have the extension .stck.
+Stack source files have the extension .stck. (They could actually have any file extension at the minuite probably).
 
 Compile the source and then use the resultant `stack.exe` program to execute your code.
 
