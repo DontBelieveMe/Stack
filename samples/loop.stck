@@ -1,0 +1,13 @@
+; This program will print 5 ten times
+
+set COUNT 10
+set STEP 1
+push COUNT
+{ ; Loop start
+    push 5
+    print 
+    pop
+} ; Loop end
+push STEP
+sub
+ifeq 4

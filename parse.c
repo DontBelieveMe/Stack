@@ -17,7 +17,8 @@ cmd_t _cmds[CMD_COUNT] = {
 	{&stack_div,   "div"  },
 	{NULL,         "jump" },		/* These two are parsed at runtime, therefore have no */
 	{NULL,         "ifeq" },
-	{NULL,         "set"  }			/* cmd pointers. They are here for the name lookup. */ 
+	{NULL,         "set"  },			/* cmd pointers. They are here for the name lookup. */ 
+	{NULL,		   "settop"},
 };
 
 macro_t* _macros[MAX_MACROS] = {};
@@ -111,7 +112,7 @@ file_t *load_file(const char *path) {
 		char *__line = line;
 		__line = _trim_whitespace(__line);
 
-		if(__line[0] == '\0' || __line[0] == ';') {
+		if(__line[0] == '\0' || __line[0] == ';' || __line[0] == '}' || __line[0] == '{') {
 			continue;
 		}
 		lines = lines + 1;
@@ -186,14 +187,13 @@ void mod_execute(stack_t *s, file_t *mod) {
 	for(i = 1; i <= mod->lines; ++i) {
 		line_t *ln = line_at_ln(mod, i);
 		const char *name =  ln->cmd->name;
-		
 		// It isn't good that these operations are parsed at 'runtime'...
 		// TODO: change
 		if(strcmp(name, "jump") == 0) {
-			 int line_n;
-			 sscanf(ln->string, "jump %d", &line_n);
-			 i = line_n;
-			 line_execute_ln(s, line_n, mod);
+			int line_n;
+			sscanf(ln->string, "jump %d", &line_n);
+			i = line_n;
+			line_execute_ln(s, line_n, mod);
 			continue;
 		}
 
@@ -201,11 +201,24 @@ void mod_execute(stack_t *s, file_t *mod) {
 			int line_n;
 			sscanf(ln->string, "ifeq %d", &line_n);
 			int value = stack_gettop(s);
-			if(value == 0) {
+		//	printf("%d %d\n", value, line_n);
+			if(value != 0) {
 				i = line_n;
 				line_execute_ln(s, line_n, mod);
 			}
-			continue;
+		}
+
+		if(strcmp(name, "settop") == 0) {
+			macro_t *macro = malloc(sizeof(macro_t));
+			char *name = malloc(100);
+			char *value = malloc(10);
+			sscanf(ln->string, "settop %s", name);
+			int top = stack_gettop(s);
+			sprintf(value, "%d", top);
+			macro->name = name;
+			macro->str_value = value;
+			_macros[mod->macros] = macro;
+			mod->macros = mod->macros + 1;
 		}
 
 		line_execute(s, ln);

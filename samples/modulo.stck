@@ -1,5 +1,8 @@
+; This program will output the modulo of value1 and value2
+
 set value1 50
 set value2 3
+
 push value1
 push value2
 div
