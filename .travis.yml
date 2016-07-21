@@ -7,6 +7,9 @@ os:
 compiler:
   - gcc
   - clang
-
+matrix:
+  - exclude:
+    - os: osx
+      compiler: gcc # Don't do a gcc build on OSX
 script:
   - make
