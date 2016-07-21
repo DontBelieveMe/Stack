@@ -35,9 +35,9 @@ typedef struct _module {
 
 module *load_file(const char *path);
 void    close_file(module *mod);
-void	line_execute(stack_st *s, line_t *line);
-line_t *line_execute_ln(stack_st *s, int ln, module *mod);
-void    mod_execute(stack_st *s, module *mod);
+void	line_execute(stack *s, line_t *line);
+line_t *line_execute_ln(stack *s, int ln, module *mod);
+void    mod_execute(stack *s, module *mod);
 line_t *line_at_ln(module *mod, int ln);
 
 #endif

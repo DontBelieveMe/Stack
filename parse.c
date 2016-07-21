@@ -162,7 +162,7 @@ close_file(module *mod) {
 }
 
 void
-line_execute(stack_st *s, line_t *line) {
+line_execute(stack *s, line_t *line) {
 	if(strcmp(line->string, "\n") != 0 && line->cmd->fptr != NULL) {
 		if(line->arg == -1) {
 			line->cmd->fptr(s);
@@ -186,14 +186,14 @@ line_at_ln(module *mod, int ln) {
 }
 
 line_t* 
-line_execute_ln(stack_st *s, int ln, module *mod) {
+line_execute_ln(stack *s, int ln, module *mod) {
 	line_t *it = line_at_ln(mod, ln);
 	line_execute(s, it);
 	return it;
 }
 
 void
-mod_execute(stack_st *s, module *mod) {
+mod_execute(stack *s, module *mod) {
 	int i;
 	for(i = 1; i <= mod->lines; ++i) {
 		line_t *ln = line_at_ln(mod, i);

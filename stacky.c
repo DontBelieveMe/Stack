@@ -7,7 +7,7 @@
 
 int 
 main(int argc, char ** argv) {
-    stack_st *s = new_stack();
+    stack *s = new_stack();
 	module *f = load_file(argv[1]);
 	
 	mod_execute(s, f);
