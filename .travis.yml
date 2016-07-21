@@ -12,4 +12,5 @@ matrix:
     - os: osx
       compiler: gcc # Don't do a gcc build on OSX
 script:
-  - make
+  - cmake -H. -Bbuild
+  - cmake --build build --config "%CONFIGURATION%"
