@@ -96,7 +96,7 @@ load_file(const char *path) {
 		}
 		lines = lines + 1;
 	    line_t *node = malloc(sizeof(line_t));
-        node->string = strdup(line); // NOT STANDARD
+        node->string = str_dup(line);
 		node->number = lines;
 
 		if(_eval_line(node, __line, &(_file->macros)) == 1) {
