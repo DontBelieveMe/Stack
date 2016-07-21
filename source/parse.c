@@ -9,6 +9,8 @@
 #include <string.h>
 #include <ctype.h>
 
+#include "common.h"
+
 cmd_t 
 _cmds[CMD_COUNT] = {
 	{&stack_push,  "push" },
@@ -29,24 +31,6 @@ _cmds[CMD_COUNT] = {
 macro_t* 
 _macros[MAX_MACROS] = {0};
 
-    
-void 
-_replace_str(char *line, const char *search, const char *replace)
-{
-     char *sp;
-
-     if ((sp = strstr(line, search)) == NULL) {
-         return;
-     }
-
-     int search_len = strlen(search);
-     int replace_len = strlen(replace);
-     int tail_len = strlen(sp+search_len);
-
-     memmove(sp+replace_len,sp+search_len,tail_len+1);
-     memcpy(sp, replace, replace_len);
-}
-
 int 
 _eval_line(line_t *line_out, char *line_in, int *nmacros) {
 	line_out->arg = -1;
@@ -56,7 +40,7 @@ _eval_line(line_t *line_out, char *line_in, int *nmacros) {
 		for(i = 0; i < *nmacros; ++i) {
 			char *name = _macros[i]->name;
 			char *value = _macros[i]->str_value;
-			_replace_str(line_in, name, value);
+			str_replace(line_in, name, value);
 		}
 	}
 	
@@ -90,21 +74,6 @@ _eval_line(line_t *line_out, char *line_in, int *nmacros) {
 	return error;
 }
 
-char*
-_trim_whitespace(char *str) {
-	char *end;
-	while(isspace(*str)) str++;
-
-	if(*str == 0)
-		return str;
-	end = str + strlen(str) - 1;
-	
-	while(end > str && isspace(*end)) end--;
-
-	*(end + 1) = 0;
-	return str;
-}
-
 module*
 load_file(const char *path) {
 	FILE *fp;
@@ -120,7 +89,7 @@ load_file(const char *path) {
 	int lines = 0;
     while(fgets(line, sizeof(line), fp)){
 		char *__line = line;
-		__line = _trim_whitespace(__line);
+		__line = str_trimwhitespace(__line);
 
 		if(__line[0] == '\0' || __line[0] == ';' || __line[0] == '}' || __line[0] == '{') {
 			continue;
