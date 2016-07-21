@@ -154,7 +154,7 @@ void close_file(file_t *mod) {
 	mod = NULL;
 }
 
-void line_execute(stack_t *s, line_t *line) {
+void line_execute(stack_st *s, line_t *line) {
 	if(strcmp(line->string, "\n") != 0 && line->cmd->fptr != NULL) {
 		if(line->arg == -1) {
 			line->cmd->fptr(s);
@@ -176,13 +176,13 @@ line_t *line_at_ln(file_t *mod, int ln) {
 	return NULL;
 }
 
-line_t *line_execute_ln(stack_t *s, int ln, file_t *mod) {
+line_t *line_execute_ln(stack_st *s, int ln, file_t *mod) {
 	line_t *it = line_at_ln(mod, ln);
 	line_execute(s, it);
 	return it;
 }
 
-void mod_execute(stack_t *s, file_t *mod) {
+void mod_execute(stack_st *s, file_t *mod) {
 	int i;
 	for(i = 1; i <= mod->lines; ++i) {
 		line_t *ln = line_at_ln(mod, i);

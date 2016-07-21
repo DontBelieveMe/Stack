@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 2.6)
+project(Stack)
+set(Source stacky.c stack.c parse.c)
+include_directories(${CMAKE_SOURCE_DIR}/include)
+add_executable(Stack ${Source})

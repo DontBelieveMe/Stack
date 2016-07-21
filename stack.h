@@ -9,22 +9,22 @@ typedef struct _element {
 typedef struct stack {
 	int			    size;
 	element_t *head;
-} stack_t;
+} stack_st;
 
-stack_t *new_stack();
-void     close_stack(stack_t *s);
+stack_st *new_stack();
+void     close_stack(stack_st *s);
 
-int 	 stack_pop(stack_t *s);
-int	 	 stack_gettop(stack_t *s);
+int 	 stack_pop(stack_st *s);
+int	 	 stack_gettop(stack_st *s);
 
-void 	 stack_push(stack_t *s, int value);
-void     stack_popnt(stack_t *s);
-void 	 stack_add(stack_t *s);
-void	 stack_sub(stack_t *s);
-void     stack_mult(stack_t *s);
-void     stack_div(stack_t *s);
-void 	 stack_dup(stack_t *s);
-void 	 stack_print(stack_t *s);
-void     stack_swap(stack_t *s);
+void 	 stack_push(stack_st *s, int value);
+void     stack_popnt(stack_st *s);
+void 	 stack_add(stack_st *s);
+void	 stack_sub(stack_st *s);
+void     stack_mult(stack_st *s);
+void     stack_div(stack_st *s);
+void 	 stack_dup(stack_st *s);
+void 	 stack_print(stack_st *s);
+void     stack_swap(stack_st *s);
 
 #endif // _STACK_
