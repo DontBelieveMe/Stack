@@ -1,4 +1,4 @@
-# Stack [![Build status](https://travis-ci.org/DontBelieveMe/Stack.svg?branch=master)](https://travis-ci.org/DontBelieveMe/Stack.svg?branch=master)
+# Stack [![Build status](https://travis-ci.org/DontBelieveMe/Stack.svg?branch=master)](https://travis-ci.org/DontBelieveMe/Stack)
 A small stack based programming language written in C.
 
 ## Notes
