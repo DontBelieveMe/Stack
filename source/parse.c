@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "common.h"
+#include "common/string.h"
 
 cmd_t 
 _cmds[CMD_COUNT] = {
@@ -21,7 +21,7 @@ _cmds[CMD_COUNT] = {
 	{&stack_print, "print"},
 	{&stack_swap,  "swap" },
 	{&stack_div,   "div"  },
-	{NULL,         "jump" },		/* These two are parsed at runtime, therefore have no */
+	{NULL,         "jump" },		/* These four are parsed at runtime, therefore have no */
 	{NULL,         "ifeq" },
 	{NULL,         "set"  },			/* cmd pointers. They are here for the name lookup. */ 
 	{NULL,		   "settop"},
