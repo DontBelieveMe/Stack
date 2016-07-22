@@ -7,7 +7,8 @@ set(source
     ${srcdir}/stack.c 
     ${srcdir}/parse.c 
     ${srcdir}/stacky.c
-    ${srcdir}/common/string.c )
+    ${srcdir}/common/string.c
+    ${srcdir}/common/list.c )
     
 include_directories(${PROJECT_SOURCE_DIR}/include)
 add_executable(stack ${source})
