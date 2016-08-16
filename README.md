@@ -65,6 +65,21 @@ set
   - e.g `set variable 7` will set a macro called `variable` to the value of `7`
   - `push variable` would then push 7 on top of the stack.
 
+### Example
+/In root directory/
+cmd > stack samples/increasing_loop.stck
+---- OUTPUT ----
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+
 ## TODO
 - [ ] Labels for `jump` and `ifeq` - using line numbers is a pain
 - [ ] Refactor the parse.c file to be better.
