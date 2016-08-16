@@ -1,10 +1,15 @@
-; This program will print 5 ten times
+; This program will 1 to ten in ascending order
 set COUNT 10
 set STEP 1
+push 0
 push COUNT
+swap
+push 1
+add
 { ; Loop start
     print
 } ; Loop end
+swap
 push STEP
 sub
-ifeq 4
+ifeq 5

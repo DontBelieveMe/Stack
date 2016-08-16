@@ -1,0 +1,10 @@
+; This program will print 10 to 1 (descending order)
+set COUNT 10
+set STEP 1
+push COUNT
+{ ; Loop start
+    print
+} ; Loop end
+push STEP
+sub
+ifeq 4

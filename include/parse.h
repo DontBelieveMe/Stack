@@ -3,7 +3,7 @@
 
 #include "stack.h"
 
-#define CMD_COUNT 13
+#define CMD_COUNT 14
 #define MAX_MACROS 100
 
 typedef struct _cmd {

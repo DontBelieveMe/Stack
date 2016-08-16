@@ -25,6 +25,7 @@ _cmds[CMD_COUNT] = {
 	{NULL,         "ifeq" },
 	{NULL,         "set"  },			/* cmd pointers. They are here for the name lookup. */ 
 	{NULL,		   "settop"},
+	{NULL,         "label"}
 };
 
 macro_t* 
@@ -39,6 +40,7 @@ _eval_line(line_t *line_out, char *line_in, int *nmacros) {
 		for(i = 0; i < *nmacros; ++i) {
 			char *name = _macros[i]->name;
 			char *value = _macros[i]->str_value;
+			printf("%s %s\n", name, value);
 			str_replace(line_in, name, value);
 		}
 	}
@@ -59,6 +61,18 @@ _eval_line(line_t *line_out, char *line_in, int *nmacros) {
 				char *value = malloc(10);
 				sscanf(line_in, "set %s  %s", name, value);
 				macro->name = name;
+				macro->str_value = value;
+				_macros[*nmacros] = macro;
+				*nmacros = *nmacros + 1;
+			}
+			if(strstr(line_in, "label")) {
+				macro_t *macro = malloc(sizeof(macro_t));
+				char *name = malloc(100);
+				char *value = malloc(10);
+				sscanf(line_in, "label %s", name);
+				macro->name = name;
+				sprintf(value, "%d", line_out->number);
+				printf("%s\n", value);
 				macro->str_value = value;
 				_macros[*nmacros] = macro;
 				*nmacros = *nmacros + 1;
