@@ -66,6 +66,7 @@ set
   - `push variable` would then push 7 on top of the stack.
 
 ### Example
+```
 /In root directory/
 cmd > stack samples/increasing_loop.stck
 ---- OUTPUT ----
@@ -79,7 +80,7 @@ cmd > stack samples/increasing_loop.stck
 8
 9
 10
-
+```
 ## TODO
 - [ ] Labels for `jump` and `ifeq` - using line numbers is a pain
 - [ ] Refactor the parse.c file to be better.
