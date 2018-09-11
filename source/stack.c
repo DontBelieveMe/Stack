@@ -154,7 +154,7 @@ stack_mult(Stack *s) {
 	result back onto the stack.
 */
 
-void 
+error_code 
 stack_div(Stack *s) {
 	int op;
 	int op2;
@@ -181,7 +181,7 @@ stack_dup(Stack *s) {
 	if((status_code = stack_push(s, value) != OK))
 		return status_code;
 	
-	if((status_code = stack_push(s, value)) != OK))
+	if((status_code = stack_push(s, value) != OK))
 		return status_code;
 	
 	return OK;

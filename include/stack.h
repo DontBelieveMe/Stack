@@ -15,9 +15,8 @@ typedef enum
 {
 	OK               = 0,
 	BAD_MEMORY_ALLOC = 1,
-	STACK_UNDERFLOW  = 2
-
-
+	STACK_UNDERFLOW  = 2,
+	FILE_IO_ERROR    = 3
 } error_code;
 
 error_code 	   new_stack   (Stack **out);
