@@ -93,6 +93,10 @@ load_file(const char *path) {
 	char line[128];
     
 	module *_file = malloc(sizeof(module));
+
+	if(!_file)
+		return 0;
+
 	_file->head = NULL;
 	_file->macros = 0;
 	
@@ -109,6 +113,10 @@ load_file(const char *path) {
 		}
 		lines = lines + 1;
 	    line_t *node = malloc(sizeof(line_t));
+
+		if(!node)
+			return 0;
+
         node->string = str_dup(line);
 		node->number = lines;
 
