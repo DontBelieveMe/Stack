@@ -87,6 +87,10 @@ _eval_line(line_t *line_out, char *line_in, int *nmacros) {
 	return error;
 }
 
+/*
+	Loads file and begin parsing of contents. Returns 0 on failure.
+*/
+
 module*
 load_file(const char *path) {
 	FILE *fp;
@@ -102,6 +106,9 @@ load_file(const char *path) {
 	
 	line_t *current = NULL;
 	fp = fopen(path, "r");
+
+	if(!fp)
+		return 0;
 
 	int lines = 0;
     while(fgets(line, sizeof(line), fp)){
@@ -140,6 +147,10 @@ load_file(const char *path) {
 	return _file;
 }
 
+/*
+	Closes and frees all resources associated with @mod.
+*/
+
 void 
 close_file(module *mod) {
 	line_t *tmp;
@@ -155,6 +166,10 @@ close_file(module *mod) {
 	mod = NULL;
 }
 
+/*
+	Execute the correct function depending on string value.
+*/
+
 void
 line_execute(stack *s, line_t *line) {
 	if(strcmp(line->string, "\n") != 0 && line->cmd->fptr != NULL) {
@@ -165,6 +180,10 @@ line_execute(stack *s, line_t *line) {
 		}
 	}
 }
+
+/*
+	Get a line_t object of the file at line @ln. Returns 0 if line is not found.
+*/
 
 line_t*
 line_at_ln(module *mod, int ln) {
@@ -179,12 +198,20 @@ line_at_ln(module *mod, int ln) {
 	return NULL;
 }
 
+/*
+	Executes a line of code at line @ln.
+*/
+
 line_t* 
 line_execute_ln(stack *s, int ln, module *mod) {
 	line_t *it = line_at_ln(mod, ln);
 	line_execute(s, it);
 	return it;
 }
+
+/*
+	Parses and executes certain operations at runtime.
+*/
 
 void
 mod_execute(stack *s, module *mod) {
