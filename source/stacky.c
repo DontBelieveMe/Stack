@@ -12,7 +12,7 @@ main(int argc, char ** argv) {
     new_stack(&s);
 	module_load(&m, argv[1]);
 	
-	mod_execute(s, m);
+	mod_execute(m, s);
 	module_close(m);
 	close_stack(s);
 	return 0;
