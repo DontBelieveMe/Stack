@@ -6,11 +6,14 @@
 
 int 
 main(int argc, char ** argv) {
-    stack *s = new_stack();
-	module *f = load_file(argv[1]);
+
+	Stack *s;
+	Module *m;
+    new_stack(&s);
+	module_load(&m, argv[1]);
 	
-	mod_execute(s, f);
-	close_file(f);
+	mod_execute(m, s);
+	module_close(m);
 	close_stack(s);
 	return 0;
 }

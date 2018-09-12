@@ -3,33 +3,58 @@
 #include <stdlib.h>
 #include <string.h>
 
-list*
-new_list(int datatype_size) {
-    list *_list = malloc(sizeof(list));
-    _list->_datatype_size = datatype_size;
-    _list->_data = malloc(datatype_size * 4);
-    _list->capacity = 4;
-    _list->size = 0;
-    return _list;
-}
+error_code
+list_new(List **list, int datatype_size) {
+    List *new_list = malloc(sizeof(List));
 
-void
-delete_list(list *_list) {
-    free(_list->_data);
-    _list->_data = NULL;
-    _list->capacity = 0;
-    _list->size = 0;
-    _list->_datatype_size = 0;
-    free(_list);
-    _list = NULL;
-}
+    if(!new_list)
+        return BAD_MEMORY_ALLOC;
 
-void
-list_add_item(list *_list, void *element) {
-    if(_list->size == _list->capacity) {
-        realloc(_list->_data, _list->capacity * 2);
-        _list->capacity = _list->capacity * 2;
+    new_list->_datatype_size = datatype_size;
+    new_list->_data = malloc(datatype_size * 4);
+
+    if(!new_list->_data)
+    {
+        free(new_list);
+        return BAD_MEMORY_ALLOC;
     }
-    _list->_data[0] = element;
-    _list->size = _list->size + 1;
+
+    new_list->capacity = 4;
+    new_list->size = 0;
+
+    *list = new_list;
+
+    return OK;
+}
+
+error_code
+list_delete(List *list) {
+    free(list->_data);
+
+    list->_data = NULL;
+    list->capacity = 0;
+    list->size = 0;
+    list->_datatype_size = 0;
+    
+    free(list);
+    list = NULL;
+
+    return OK;
+}
+
+error_code
+list_add_item(List *list, void *element) {
+    if(list->size == list->capacity) {
+        list->_data = realloc(list->_data, list->capacity * 2);
+
+        if(!list->_data)
+            return BAD_MEMORY_ALLOC;
+
+        list->capacity = list->capacity * 2;
+    }
+
+    list->_data[0] = element;
+    list->size = list->size + 1;
+
+    return OK;
 }

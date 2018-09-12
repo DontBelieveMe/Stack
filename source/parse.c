@@ -10,8 +10,8 @@
 
 #include "common/string.h"
 
-cmd_t 
-_cmds[CMD_COUNT] = {
+Command 
+_commands[COMMAND_COUNT] = {
 	{&stack_push,  "push" },
 	{&stack_popnt, "pop"  },
 	{&stack_add,   "add"  },
@@ -28,11 +28,11 @@ _cmds[CMD_COUNT] = {
 	{NULL,         "label"}
 };
 
-macro_t* 
+Macro* 
 _macros[MAX_MACROS] = {0};
 
 int 
-_eval_line(line_t *line_out, char *line_in, int *nmacros) {
+_eval_line(Line *line_out, char *line_in, int *nmacros) {
 	line_out->arg = -1;
 	
 	if(*nmacros > 0) {
@@ -47,16 +47,16 @@ _eval_line(line_t *line_out, char *line_in, int *nmacros) {
 	
 	int error;
 	int i;
-	for(i = 0; i < CMD_COUNT; ++i) {
-		if(strstr(line_in, _cmds[i].name) != NULL) {
-		 	line_out->cmd = &_cmds[i];
+	for(i = 0; i < COMMAND_COUNT; ++i) {
+		if(strstr(line_in, _commands[i].name) != NULL) {
+		 	line_out->command = &_commands[i];
 		 	if(strstr(line_in, "push")) {
 		 		int arg;
 		 		sscanf(line_in, "push %d", &arg);
 		 		line_out->arg = arg;
 		 	}
 			if(strstr(line_in, "set")) {
-				macro_t *macro = malloc(sizeof(macro_t));
+				Macro *macro = malloc(sizeof(Macro));
 				char *name = malloc(100);
 				char *value = malloc(10);
 				sscanf(line_in, "set %s  %s", name, value);
@@ -66,7 +66,7 @@ _eval_line(line_t *line_out, char *line_in, int *nmacros) {
 				*nmacros = *nmacros + 1;
 			}
 			if(strstr(line_in, "label")) {
-				macro_t *macro = malloc(sizeof(macro_t));
+				Macro *macro = malloc(sizeof(Macro));
 				char *name = malloc(100);
 				char *value = malloc(10);
 				sscanf(line_in, "label %s", name);
@@ -87,17 +87,34 @@ _eval_line(line_t *line_out, char *line_in, int *nmacros) {
 	return error;
 }
 
-module*
-load_file(const char *path) {
+/*
+	Loads file and begin parsing of contents.
+
+	module: New instance of a module.
+	path:   Path to a file to load.
+*/
+
+error_code
+module_load(Module **module, const char *path) {
 	FILE *fp;
 	char line[128];
     
-	module *_file = malloc(sizeof(module));
+	Module *_file = malloc(sizeof(Module));
+
+	if(!_file)
+		return BAD_MEMORY_ALLOC;
+
 	_file->head = NULL;
 	_file->macros = 0;
 	
-	line_t *current = NULL;
+	Line *current = NULL;
 	fp = fopen(path, "r");
+
+	if(!fp)
+	{
+		free(_file);
+		return BAD_MEMORY_ALLOC;
+	}
 
 	int lines = 0;
     while(fgets(line, sizeof(line), fp)){
@@ -108,7 +125,15 @@ load_file(const char *path) {
 			continue;
 		}
 		lines = lines + 1;
-	    line_t *node = malloc(sizeof(line_t));
+	    Line *node = malloc(sizeof(Line));
+
+		if(!node)
+		{
+			free(_file);
+			fclose(fp);
+			return BAD_MEMORY_ALLOC;
+		}
+
         node->string = str_dup(line);
 		node->number = lines;
 
@@ -129,96 +154,165 @@ load_file(const char *path) {
 	_file->lines = lines;
 
     fclose(fp);
-	return _file;
+
+	*module = _file;
+
+	return OK;
 }
 
-void 
-close_file(module *mod) {
-	line_t *tmp;
-	while(mod->head != NULL) {
-		tmp = mod->head;
-		mod->head = mod->head->next;
+/*
+	Closes and frees all resources associated with a Module.
+
+	module: Module to free.
+*/
+
+error_code 
+module_close(Module *module) {
+	Line *tmp;
+	while(module->head != NULL) {
+		tmp = module->head;
+		module->head = module->head->next;
 		free(tmp->string);
 		tmp->string = NULL;
 		free(tmp);
 		tmp = NULL;
 	}
-	free(mod);
-	mod = NULL;
+	free(module);
+	module = NULL;
+
+	return OK;
 }
 
-void
-line_execute(stack *s, line_t *line) {
-	if(strcmp(line->string, "\n") != 0 && line->cmd->fptr != NULL) {
+/*
+	Execute the correct function depending on string value.
+
+	line: Line instance to execute.
+	s:    Stack to use in execution context
+*/
+
+error_code
+line_execute(Line *line, Stack *s) {
+	if(strcmp(line->string, "\n") != 0 && line->command->fptr != NULL) {
 		if(line->arg == -1) {
-			line->cmd->fptr(s);
+			line->command->fptr(s);
 		} else {
-			line->cmd->fptr(s, line->arg);
+			line->command->fptr(s, line->arg);
 		}
 	}
+
+	return OK;
 }
 
-line_t*
-line_at_ln(module *mod, int ln) {
-	line_t *it = mod->head;
-	while(it != NULL) {
-		if(it->number == ln) {
-			return it;
+/*
+	Get a Line object of the file at line @line_number.
+
+	line:        Output for found Line object
+	module:      the file to search
+	line_number: line number to get Line object
+*/
+
+error_code
+line_at_ln(Line **line, Module *module, int line_number) {
+	Line *current = module->head;
+	while(current != NULL) {
+		if(current->number == line_number) {
+			*line = current;
 			break;
 		}
-		it = it->next;
+		current = current->next;
 	}
-	return NULL;
+
+	return OK;
 }
 
-line_t* 
-line_execute_ln(stack *s, int ln, module *mod) {
-	line_t *it = line_at_ln(mod, ln);
-	line_execute(s, it);
-	return it;
+/*
+	Executes a line of code at line @line_number.
+
+	line:        Output
+	s:           Stack to use
+	line_number: Line number to execute
+	module:      The file where execution is
+*/
+
+error_code
+line_execute_ln(Line **line, Stack *s, int line_number, Module *module) {
+	Line *it;
+	
+	line_at_ln(&it, module, line_number);
+	line_execute(it, s);
+
+	*line = it;
+	
+	return OK;
 }
 
-void
-mod_execute(stack *s, module *mod) {
+/*
+	Parses and executes certain operations at runtime.
+
+	module: Instance of Module to execute
+	s:      Stack to use
+*/
+
+error_code
+mod_execute(Module *module, Stack *s) {
 	int i;
-	for(i = 1; i <= mod->lines; ++i) {
-		line_t *ln = line_at_ln(mod, i);
-	//	printf("%s\n", ln->string);
-		const char *name =  ln->cmd->name;
+	for(i = 1; i <= module->lines; ++i) {
+		Line *line;
+		line_at_ln(&line, module, i);
+	//	printf("%s\n", line->string);
+		const char *name =  line->command->name;
 		// It isn't good that these operations are parsed at 'runtime'...
 		// TODO: change
 		if(strcmp(name, "jump") == 0) {
 			int line_n;
-			sscanf(ln->string, "jump %d", &line_n);
+			sscanf(line->string, "jump %d", &line_n);
 			i = line_n;
-			line_execute_ln(s, line_n, mod);
+
+			line_execute_ln(&line, s, line_n, module);
 			continue;
 		}
 
 		if(strcmp(name, "ifeq") == 0) {
 			int line_n;
-			sscanf(ln->string, "ifeq %d", &line_n);
-			int value = stack_gettop(s);
+			sscanf(line->string, "ifeq %d", &line_n);
+
+			int value = 0;
+			error_code status_code;
+			if((status_code = stack_gettop(s, &value)) != OK)
+				return status_code;
+			
 		//	printf("%d %d\n", value, line_n);
 			if(value != 0) {
 				i = line_n;
-				line_execute_ln(s, line_n, mod);
+				line_execute_ln(&line, s, line_n, module);
 			}
 		}
 
 		if(strcmp(name, "settop") == 0) {
-			macro_t *macro = malloc(sizeof(macro_t));
+			Macro *macro = malloc(sizeof(Macro));
 			char *name = malloc(100);
 			char *value = malloc(10);
-			sscanf(ln->string, "settop %s", name);
-			int top = stack_gettop(s);
+			sscanf(line->string, "settop %s", name);
+
+			int top = 0;
+			error_code status_code;
+			if((status_code = stack_gettop(s, &top)) != OK)
+			{
+				free(macro);
+				free(name);
+				free(value);
+				return status_code;
+			}
+
 			sprintf(value, "%d", top);
 			macro->name = name;
 			macro->str_value = value;
-			_macros[mod->macros] = macro;
-			mod->macros = mod->macros + 1;
+			_macros[module->macros] = macro;
+			module->macros = module->macros + 1;
 		}
 
-		line_execute(s, ln);
+		line_execute(line, s);
 	}
+
+	return OK;
 }

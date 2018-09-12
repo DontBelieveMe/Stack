@@ -1,30 +1,38 @@
 #ifndef _STACK_
 #define _STACK_
 
-typedef struct _element {
-	int value;
-	struct _element *next;
-} element_t;
+typedef struct _Element {
+	int              value;
+	struct _Element *next;
+} Element;
 
-typedef struct _stack {
-	int			    size;
-	element_t *head;
-} stack;
+typedef struct _Stack {
+	int		   size;
+	Element   *head;
+} Stack;
 
-stack 	*new_stack();
-void     close_stack(stack *s);
+typedef enum
+{
+	OK               = 0,
+	BAD_MEMORY_ALLOC = 1,
+	STACK_UNDERFLOW  = 2,
+	FILE_IO_ERROR    = 3
+} error_code;
 
-int 	 stack_pop(stack *s);
-int	 	 stack_gettop(stack *s);
+error_code 	   new_stack   (Stack **out);
+error_code     close_stack (Stack *s);
 
-void 	 stack_push(stack *s, int value);
-void     stack_popnt(stack *s);
-void 	 stack_add(stack *s);
-void	 stack_sub(stack *s);
-void     stack_mult(stack *s);
-void     stack_div(stack *s);
-void 	 stack_dup(stack *s);
-void 	 stack_print(stack *s);
-void     stack_swap(stack *s);
+error_code 	   stack_pop   (Stack *s, int *popped_value);
+error_code	   stack_gettop(Stack *s, int *top_stack_value);
+
+error_code 	   stack_push  (Stack *s, int value);
+error_code     stack_popnt (Stack *s);
+error_code 	   stack_add   (Stack *s);
+error_code	   stack_sub   (Stack *s);
+error_code     stack_mult  (Stack *s);
+error_code     stack_div   (Stack *s);
+error_code 	   stack_dup   (Stack *s);
+error_code 	   stack_print (Stack *s);
+error_code     stack_swap  (Stack *s);
 
 #endif // _STACK_
