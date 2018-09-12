@@ -37,7 +37,7 @@ error_code module_load    (Module **module, const char *path);
 error_code module_close   (Module  *module);
 error_code line_execute   (Line *line, Stack *s);
 error_code line_execute_ln(Line **line, Stack *s, int line_number, Module *module);
-error_code mod_execute    (Stack *s, Module *module);
+error_code mod_execute    (Module *module, Stack *s);
 error_code line_at_ln     (Line **line, Module *module, int line_number);
 
 #endif

@@ -88,7 +88,10 @@ _eval_line(Line *line_out, char *line_in, int *nmacros) {
 }
 
 /*
-	Loads file and begin parsing of contents. Returns 0 on failure.
+	Loads file and begin parsing of contents.
+
+	module: New instance of a module.
+	path:   Path to a file to load.
 */
 
 error_code
@@ -158,7 +161,9 @@ module_load(Module **module, const char *path) {
 }
 
 /*
-	Closes and frees all resources associated with @mod.
+	Closes and frees all resources associated with a Module.
+
+	module: Module to free.
 */
 
 error_code 
@@ -180,6 +185,9 @@ module_close(Module *module) {
 
 /*
 	Execute the correct function depending on string value.
+
+	line: Line instance to execute.
+	s:    Stack to use in execution context
 */
 
 error_code
@@ -196,7 +204,11 @@ line_execute(Line *line, Stack *s) {
 }
 
 /*
-	Get a line_t object of the file at line @line_number. Returns 0 if line is not found.
+	Get a Line object of the file at line @line_number.
+
+	line:        Output for found Line object
+	module:      the file to search
+	line_number: line number to get Line object
 */
 
 error_code
@@ -215,6 +227,11 @@ line_at_ln(Line **line, Module *module, int line_number) {
 
 /*
 	Executes a line of code at line @line_number.
+
+	line:        Output
+	s:           Stack to use
+	line_number: Line number to execute
+	module:      The file where execution is
 */
 
 error_code
@@ -231,10 +248,13 @@ line_execute_ln(Line **line, Stack *s, int line_number, Module *module) {
 
 /*
 	Parses and executes certain operations at runtime.
+
+	module: Instance of Module to execute
+	s:      Stack to use
 */
 
 error_code
-mod_execute(Stack *s, Module *module) {
+mod_execute(Module *module, Stack *s) {
 	int i;
 	for(i = 1; i <= module->lines; ++i) {
 		Line *line;
