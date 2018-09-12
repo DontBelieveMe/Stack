@@ -78,7 +78,8 @@ stack_pop(Stack *s, int *popped_value) {
 		return STACK_UNDERFLOW;
 
 	Element *next_node = s->head->next;
-	*popped_value = s->head->value;
+	if(popped_value) *popped_value = s->head->value;
+
 	free(s->head);
 	s->head = next_node;
 	s->size = s->size - 1;
@@ -220,6 +221,8 @@ stack_gettop(Stack *s, int *top_stack_value) {
 	int value = 0;
 	if((status_code = stack_pop(s, &value)) != OK)
 		return status_code;
+	
+	if(top_stack_value) *top_stack_value = value;
 	
 	return OK;
 }
