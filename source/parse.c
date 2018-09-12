@@ -108,7 +108,10 @@ module_load(Module **module, const char *path) {
 	fp = fopen(path, "r");
 
 	if(!fp)
-		return FILE_IO_ERROR;
+	{
+		free(_file);
+		return BAD_MEMORY_ALLOC;
+	}
 
 	int lines = 0;
     while(fgets(line, sizeof(line), fp)){
@@ -122,7 +125,11 @@ module_load(Module **module, const char *path) {
 	    Line *node = malloc(sizeof(Line));
 
 		if(!node)
+		{
+			free(_file);
+			fclose(fp);
 			return BAD_MEMORY_ALLOC;
+		}
 
         node->string = str_dup(line);
 		node->number = lines;
@@ -250,7 +257,7 @@ mod_execute(Stack *s, Module *module) {
 
 			int value = 0;
 			error_code status_code;
-			if((status_code = stack_gettop(s, &value) != OK))
+			if((status_code = stack_gettop(s, &value)) != OK)
 				return status_code;
 			
 		//	printf("%d %d\n", value, line_n);
@@ -268,8 +275,13 @@ mod_execute(Stack *s, Module *module) {
 
 			int top = 0;
 			error_code status_code;
-			if((status_code = stack_gettop(s, &top) != OK))
+			if((status_code = stack_gettop(s, &top)) != OK)
+			{
+				free(macro);
+				free(name);
+				free(value);
 				return status_code;
+			}
 
 			sprintf(value, "%d", top);
 			macro->name = name;
