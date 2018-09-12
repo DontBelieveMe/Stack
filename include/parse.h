@@ -3,41 +3,41 @@
 
 #include "stack.h"
 
-#define CMD_COUNT 14
+#define COMMAND_COUNT 14
 #define MAX_MACROS 100
 
-typedef struct _cmd {
+typedef struct _Command {
 	void (*fptr)();
 	const char *name;
-} cmd_t;
+} Command;
 
-typedef struct _macro {
+typedef struct _Macro {
 	char *str_value;
 	char *name;
-} macro_t;
+} Macro;
 
-extern cmd_t _cmds[CMD_COUNT];
-extern macro_t* _macros[MAX_MACROS];
+extern Command _commands[COMMAND_COUNT];
+extern Macro* _macros[MAX_MACROS];
 
-typedef struct _line {
-    char   	     	*string;
-    struct _line 	*next;
-	cmd_t           *cmd;
+typedef struct _Line {
+    char   	       *string;
+    struct _Line   *next;
+	Command        *command;
 	int           	arg;
 	int           	number;
-} line_t;
+} Line;
 
-typedef struct _module {
-	int lines;
-	line_t *head;
-	int macros;
-} module;
+typedef struct _Module {
+	int   lines;
+	Line *head;
+	int   macros;
+} Module;
 
-module *load_file(const char *path);
-void    close_file(module *mod);
-void	line_execute(stack *s, line_t *line);
-line_t *line_execute_ln(stack *s, int ln, module *mod);
-void    mod_execute(stack *s, module *mod);
-line_t *line_at_ln(module *mod, int ln);
+error_code module_load    (Module **module, const char *path);
+error_code module_close   (Module  *mod);
+error_code line_execute   (Line *line, Stack *s);
+error_code line_execute_ln(Line **line, Stack *s, int line_number, Module *module);
+error_code mod_execute    (Stack *s, Module *module);
+error_code line_at_ln     (Line **line, Module *module, int line_number);
 
 #endif
