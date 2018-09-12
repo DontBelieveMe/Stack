@@ -1,6 +1,8 @@
 #ifndef _LIST_
 #define _LIST_
 
+#include "../stack.h"
+
 #define NEW_LIST(T) \
     new_list(sizeof(T))
 
@@ -11,17 +13,16 @@
 #define LIST_GET_AT(LIST, T, IDX) \
     *((T*)LIST->_data[IDX])
 
-typedef struct _list {
+typedef struct _List {
     void **_data;
     int   _datatype_size;
     int   size;
     int   capacity;
-} list;
+} List;
 
-list *new_list(int datatype_size);
-void delete_list(list *_list);
-void list_add_item(list *_list, void *element);
-
-void list_remove_item(list *_list, int index);
+error_code list_new        (List **list, int datatype_size);
+error_code list_delete     (List *list);
+error_code list_add_item   (List *list, void *element);
+error_code list_remove_item(List *list, int index);
 
 #endif
