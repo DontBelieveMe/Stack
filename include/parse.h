@@ -7,8 +7,8 @@
 #define MAX_MACROS 100
 
 typedef struct _Command {
-	void (*fptr)();
-	const char *name;
+	error_code (*fptr)();
+	const char  *name;
 } Command;
 
 typedef struct _Macro {
