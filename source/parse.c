@@ -248,7 +248,7 @@ mod_execute(Stack *s, Module *module) {
 			sscanf(line->string, "jump %d", &line_n);
 			i = line_n;
 
-			line_execute_line(s, line_n, module);
+			line_execute_ln(&line, s, line_n, module);
 			continue;
 		}
 
@@ -264,7 +264,7 @@ mod_execute(Stack *s, Module *module) {
 		//	printf("%d %d\n", value, line_n);
 			if(value != 0) {
 				i = line_n;
-				line_execute_line(s, line_n, module);
+				line_execute_ln(&line, s, line_n, module);
 			}
 		}
 
